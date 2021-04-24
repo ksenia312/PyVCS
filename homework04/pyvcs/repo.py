@@ -24,10 +24,10 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
 
     if workdir.is_file():
         raise AssertionError(f"{workdir} is not a directory")
-    os.makedirs(path / "refs" / "heads", exist_ok=True)
-    os.makedirs(path / "refs" / "tags", exist_ok=True)
+    os.makedirs(path / "refs" / "heads")
+    os.makedirs(path / "refs" / "tags")
+    os.makedirs(path / "objects")
 
-    (path / "objects").mkdir()
 
     with (path / "config").open("w") as f:
         f.write(
