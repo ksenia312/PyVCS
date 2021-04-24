@@ -24,10 +24,17 @@ def hash_object(data: bytes, fmt: str, write: bool = False) -> str:
     return hash
 
 
-
 def resolve_object(obj_name: str, gitdir: pathlib.Path) -> tp.List[str]:
-    # PUT YOUR CODE HERE
-    ...
+    path = gitdir / "objects"
+    if not 4 <= len(obj_name) <= 40:
+        raise AssertionError(f"Not a valid object name {obj_name}")
+    a = []
+    for i in (path / obj_name[:2]).glob(f"{obj_name[2:]}*"):
+        a.append(obj_name[:2] + i.name)
+
+    if not a:
+        raise AssertionError(f"Not a valid object name {obj_name}")
+    return a
 
 
 def find_object(obj_name: str, gitdir: pathlib.Path) -> str:
