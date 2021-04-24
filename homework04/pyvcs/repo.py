@@ -14,7 +14,7 @@ def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
 
     if (workdir / name).is_dir():
         return workdir / name
-    raise Exception("Not a git repository")
+    raise AssertionError("Not a git repository")
 
 
 def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
@@ -23,7 +23,7 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
     path = workdir / name
 
     if workdir.is_file():
-        raise Exception(f"{workdir} is not a directory")
+        raise AssertionError(f"{workdir} is not a directory")
     os.makedirs(path / "refs" / "heads", exist_ok=True)
     os.makedirs(path / "refs" / "tags", exist_ok=True)
 
