@@ -8,11 +8,11 @@ def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
     workdir = pathlib.Path(workdir)
 
     while pathlib.Path(workdir.absolute().root) != workdir.absolute():
-        if (workdir / name).is_dir():
+        if os.path.isdir((workdir / name)):
             return workdir / name
         workdir = workdir.parent
 
-    if (workdir / name).is_dir():
+    if os.path.isdir((workdir / name)):
         return workdir / name
     raise AssertionError("Not a git repository")
 
