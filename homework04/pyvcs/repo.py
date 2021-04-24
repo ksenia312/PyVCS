@@ -28,7 +28,6 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
     os.makedirs(path / "refs" / "tags")
     os.makedirs(path / "objects")
 
-
     with (path / "config").open("w") as f:
         f.write(
             "[core]\n\t"
@@ -45,3 +44,4 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
         f.write("Unnamed pyvcs repository.\n")
 
     return path
+
