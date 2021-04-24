@@ -18,7 +18,9 @@ class HashObjectTestCase(TestCase):
 
     def test_compute_object_id(self):
         contents = "that's what she said"
+
         data = contents.encode()
+
         sha = objects.hash_object(data, fmt="blob")
         expected_sha = "7e774cf533c51803125d4659f3488bd9dffc41a6"
         self.assertEqual(expected_sha, sha)
