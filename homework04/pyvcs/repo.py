@@ -8,13 +8,13 @@ def repo_find(workdir: tp.Union[str, pathlib.Path] = ".") -> pathlib.Path:
     workdir = pathlib.Path(workdir)
 
     while pathlib.Path(workdir.absolute().root) != workdir.absolute():
-        if (workdir / name).is_dir():
+        if os.path.isdir((workdir / name)):
             return workdir / name
         workdir = workdir.parent
 
-    if (workdir / name).is_dir():
+    if os.path.isdir((workdir / name)):
         return workdir / name
-    raise Exception("Not a git repository")
+    raise AssertionError("Not a git repository")
 
 
 def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
@@ -23,11 +23,10 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
     path = workdir / name
 
     if workdir.is_file():
-        raise Exception(f"{workdir} is not a directory")
-    os.makedirs(path / "refs" / "heads", exist_ok=True)
-    os.makedirs(path / "refs" / "tags", exist_ok=True)
-
-    (path / "objects").mkdir()
+        raise AssertionError(f"{workdir} is not a directory")
+    os.makedirs(path / "refs" / "heads")
+    os.makedirs(path / "refs" / "tags")
+    os.makedirs(path / "objects")
 
     with (path / "config").open("w") as f:
         f.write(
@@ -45,3 +44,4 @@ def repo_create(workdir: tp.Union[str, pathlib.Path]) -> pathlib.Path:
         f.write("Unnamed pyvcs repository.\n")
 
     return path
+
