@@ -42,9 +42,13 @@ def find_object(obj_name: str, gitdir: pathlib.Path) -> str:
     ...
 
 
-def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
-    # PUT YOUR CODE HERE
-    ...
+def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, int]:
+    path = gitdir / "objects" / sha[:2] / sha[2:]
+    with path.open("rb") as f:
+        data = zlib.decompress(f.read())
+        fmt = data[:data.find(b" ")].decode()
+        content = data[data.find(b"\x00") + 1:]
+    return fmt, content
 
 
 def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
