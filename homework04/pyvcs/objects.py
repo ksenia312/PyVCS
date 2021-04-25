@@ -42,7 +42,7 @@ def find_object(obj_name: str, gitdir: pathlib.Path) -> str:
     ...
 
 
-def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, int]:
+def read_object(sha: str, gitdir: pathlib.Path) -> tp.Tuple[str, bytes]:
     path = gitdir / "objects" / sha[:2] / sha[2:]
     with path.open("rb") as f:
         data = zlib.decompress(f.read())
@@ -57,8 +57,16 @@ def read_tree(data: bytes) -> tp.List[tp.Tuple[int, str, str]]:
 
 
 def cat_file(obj_name: str, pretty: bool = True) -> None:
-    # PUT YOUR CODE HERE
-    ...
+    fmt, data = read_object(obj_name, repo_find())
+    if fmt == "blob" or fmt == "commit":
+        if pretty:
+            print(data.decode())
+        else:
+            print(data)
+    elif fmt == 'tree':
+        print('in progress')
+    else:
+        print(data)
 
 
 def find_tree_files(tree_sha: str, gitdir: pathlib.Path) -> tp.List[tp.Tuple[str, str]]:
