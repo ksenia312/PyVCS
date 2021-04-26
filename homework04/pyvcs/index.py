@@ -52,8 +52,24 @@ class GitIndexEntry(tp.NamedTuple):
 
 
 def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
-    # PUT YOUR CODE HERE
-    ...
+    reading_index, a, b = [], 8, 12
+    path = gitdir / 'index'
+    if not path.exists():
+        return reading_index
+    else:
+        with path.open("rb") as f:
+            data = f.read()
+
+    count = struct.unpack("!i", data[a:b])[0]
+    for step in range(count):
+        a = data.index(b"\00", a + 68, len(data))
+        while not (a - 11) % 8 == 0:
+            a += 1
+        indexE = GitIndexEntry
+        unpacked = indexE.unpack(data[b : a + 1])
+        reading_index.append(unpacked)
+        b = a + 1
+    return reading_index
 
 
 def write_index(gitdir: pathlib.Path, entries: tp.List[GitIndexEntry]) -> None:

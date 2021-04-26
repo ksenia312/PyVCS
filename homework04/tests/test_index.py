@@ -62,6 +62,7 @@ class ReadIndexTestCase(TestCase):
         self.fs.create_file(gitdir / "index", contents=raw_index)
 
         entries = read_index(gitdir)
+
         self.assertEqual(3, len(entries))
         # TODO: Add sha
         self.assertEqual(
